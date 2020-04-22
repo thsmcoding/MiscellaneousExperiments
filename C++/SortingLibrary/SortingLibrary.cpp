@@ -1,13 +1,17 @@
-// SortingLibrary.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include "pch.h"
+#include <vector>
 #include <iostream>
 
-int main()
-{
-    std::cout << "Hello World!\n"; 
-}
+
+////int main()
+////{
+////	std::cout << "TESTING SELECTION ALGORITHM \n";
+////	std::vector<int> vec = { 1,2,5,777,-1};
+////	selectionSort<int>(vec);
+////	int n = 0;
+////    std::cin>>n; 
+////	return 0;
+////}
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu

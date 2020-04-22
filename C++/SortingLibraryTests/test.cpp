@@ -1,12 +1,16 @@
 #include "pch.h"
 #include <vector>
-#include "C:\Users\hassi\source\repos\SortingLibrary\SortingLibrary\elementarysorts.cpp"
+
+#include "../SortingLibrary/elementarysorts.h"
 #include <algorithm>
 #include <string>
+
+using namespace std;
 
 TEST(EMPTYVECTORCASE, selectionSortFunction) {
 	std::vector<int> vector1 = {};
 	std::vector<int> vector1_bis = {};
+	
 	selectionSort<int>(vector1_bis);
 	EXPECT_EQ(vector1, vector1_bis);
 }
@@ -34,4 +38,9 @@ TEST(STRINGCASE, selectionSortFunction) {
 	std::sort(vector1.begin(), vector1.end());
 	selectionSort<std::string>(vector1_bis);
 	EXPECT_EQ(vector1, vector1_bis);
+}
+
+int main(int argc, char** argv) {
+	::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }
