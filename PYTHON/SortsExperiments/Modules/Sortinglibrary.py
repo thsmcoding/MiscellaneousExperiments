@@ -25,8 +25,28 @@ def findPotentialMinimum(i, gui):
         if  bars[u].data < bars[_min].data:
             _min = u
     return _min
+
+def insertionswap(i,j, gui):
+    gui.swapNumber(i, j)    
+    gui.setColor(i, 0)
+    gui.setColor(j, 0)
+    ti.sleep(0.5)  
+
+def makeexchanges(j, gui):
+    print("Function makeexchanges")
+    myrectangles = gui.rectangles
+    gui.canvas.itemconfig(myrectangles[j], fill=COLORS[12])
+    gui.listBars[j].setColor(COLORS[12])
+    ti.sleep(0.2)
+    if gui.listBars[j].data < gui.listBars[j-1].data:
+        gui.swapNumber(j,j-1) 
+        ti.sleep(0.2)
+        gui.setColor(j-1, 0)
+    gui.setColor(j, 0)
+    ti.sleep(0.3)    
     
-    
+
+   
 def selectionAlgorithm(current,gui):
     myrectangles = gui.rectangles
     gui.canvas.itemconfig(myrectangles[current], fill=COLORS[11])
@@ -38,15 +58,22 @@ def selectionAlgorithm(current,gui):
             gui.listBars[_min].setColor(COLORS[12])
             ti.sleep(0.4)
             gui.swapNumber(current, _min)        
-    ti.sleep(0.6)
+    ti.sleep(0.5)
     gui.setColor(current, 0)
     gui.setColor(_min, 0)
     
     
 
-def insertionAlgorithm(listBars,gui):
+def insertionAlgorithm(current,gui):
     print("Starting insertion algorithm")
-
+    myrectangles = gui.rectangles
+    bars = gui.listBars    
+    ti.sleep(0.4)
+    gui.canvas.itemconfig(myrectangles[current], fill=COLORS[11])
+    gui.listBars[current].setColor(COLORS[11])
+    ti.sleep(0.2)
+    l = [makeexchanges(j,gui) for j in range(current,0, -1)] 
+    gui.setColor(current, 0)
 
 
 def bubbleAlgorithm(listBars,gui):

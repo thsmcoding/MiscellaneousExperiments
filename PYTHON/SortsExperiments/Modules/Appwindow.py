@@ -48,8 +48,7 @@ class Appwindow(tk.Tk):
         self.canvas.delete(self.tags[i])
         
         
-    def swapNumber(self, i, j):
-      
+    def swapNumber(self, i, j):      
         temp1_bar = cp.deepcopy(self.listBars[i])
         temp2_bar = cp.deepcopy(self.listBars[j])    
         self.deleteRectangle(i)        
@@ -115,19 +114,23 @@ class Appwindow(tk.Tk):
             msg.showerror("Input error", "Please enter an integer for min, max and array size!")
             return None        
         self.numbers = check_size
-        self.algorithm = str(self.algo_ComboList.get())
+        self.algorithm = str(self.algo_ComboList.get())        
+        if self.algorithm == "Insertion":
+            self.arguments = range(1, self.numbers)
+        else:
+            self.arguments = range(0, self.numbers)
         self.inputarray = std.generateRandomArray(self.numbers, int(self.min_Entry.get()), int(self.max_Entry.get()))                
         self.listBars = Bar.Bar.createBars_scaled(self.width, self.height, self.inputarray)  
         self.canvas.create_line(0,self.height/2,LAST_PIXEL,self.height/2, fill=COLORS[1] ,dash=(4,1), width=2)
         self.addComponents(self.inputarray)       
         self.rectangles = [self.createRectanglefrombar(rect,None,i) for i,rect in enumerate(self.listBars, start=0)]        
-        thread_swap = thd.Thread(target=self.swapNumber, args=(0, self.numbers-1))
-        thread_swap = thd.Thread(target=self.applySelection)       
+        #thread_swap = thd.Thread(target=self.swapNumber, args=(0, self.numbers-1))  ##JUST TO TEST
+        thread_swap = thd.Thread(target=self.applySelectedAlgorithm)       
         thread_swap.start()    
         
         
-    def applySelection(self):
-        [std.switcherFunction[self.algorithm](current, self) for current in range(0,self.numbers)]        
+    def applySelectedAlgorithm(self):
+        [std.switcherFunction[self.algorithm](current, self) for current in self.arguments]        
         
         
     def createcomponents(self, titre, width, height):
@@ -184,6 +187,7 @@ class Appwindow(tk.Tk):
         self.button_launch = tk.Button(self.secondary_container, bg=COLORS[1], fg=COLORS[5],text="Launch", width=8, command= lambda : self.launch())
         self.button_launch.pack(side=tk.TOP, pady=(70,10))
         self.size_Entry.focus()        
+        
         
         
     def addComponents(self, inputarray):
