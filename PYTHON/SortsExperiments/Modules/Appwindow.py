@@ -115,7 +115,7 @@ class Appwindow(tk.Tk):
             return None        
         self.numbers = check_size
         self.algorithm = str(self.algo_ComboList.get())        
-        if self.algorithm == "Insertion":
+        if self.algorithm == "Insertion"or self.algorithm == "Insertionimproved":
             self.arguments = range(1, self.numbers)
         else:
             self.arguments = range(0, self.numbers)

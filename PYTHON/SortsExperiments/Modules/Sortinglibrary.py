@@ -26,14 +26,8 @@ def findPotentialMinimum(i, gui):
             _min = u
     return _min
 
-def insertionswap(i,j, gui):
-    gui.swapNumber(i, j)    
-    gui.setColor(i, 0)
-    gui.setColor(j, 0)
-    ti.sleep(0.5)  
 
 def makeexchanges(j, gui):
-    print("Function makeexchanges")
     myrectangles = gui.rectangles
     gui.canvas.itemconfig(myrectangles[j], fill=COLORS[12])
     gui.listBars[j].setColor(COLORS[12])
@@ -45,8 +39,24 @@ def makeexchanges(j, gui):
     gui.setColor(j, 0)
     ti.sleep(0.3)    
     
-
-   
+def makeexchangesimproved(j,i, gui):
+    myrectangles = gui.rectangles
+    gui.canvas.itemconfig(myrectangles[j], fill=COLORS[12])
+    gui.listBars[j].setColor(COLORS[12])
+    ti.sleep(0.8)
+    if gui.listBars[i].data < gui.listBars[j-1].data:
+        gui.swapNumber(j,j-1) 
+        ti.sleep(0.2)
+        gui.setColor(j-1, 0)
+    ti.sleep(0.3)  
+    if  j == 0:
+        print("DO YOUR ZERO")
+        gui.swapNumber(i,j)
+    gui.setColor(j, 0)
+    gui.setColor(i, 0)   
+    
+    
+    
 def selectionAlgorithm(current,gui):
     myrectangles = gui.rectangles
     gui.canvas.itemconfig(myrectangles[current], fill=COLORS[11])
@@ -76,8 +86,23 @@ def insertionAlgorithm(current,gui):
     gui.setColor(current, 0)
 
 
-def bubbleAlgorithm(listBars,gui):
-    print("Starting bubble algorithm")
+def bubbleAlgorithm(current, gui):
+    N = gui.numbers
+    l = [makeexchanges(j, gui) for j in range(1, N-current, 1)] 
+    
+
+def insertionAlgorithmImproved(current, gui):
+    print("Insertion Algorithm - version improved")
+    myrectangles = gui.rectangles
+    bars = gui.listBars    
+    gui.canvas.itemconfig(myrectangles[current], fill=COLORS[11])
+    gui.listBars[current].setColor(COLORS[11])
+    ti.sleep(0.4)
+    l = [makeexchangesimproved(j,current, gui) for j in range(current,-1, -1)] 
+    gui.setColor(current, 0)  
+    
+    
+
 
 
 
@@ -95,6 +120,7 @@ def priorityQueueAlgorithm(listBars,gui):
 
 switcherFunction = {"Selection" : selectionAlgorithm,
                     "Insertion" : insertionAlgorithm,
+                    "Insertionimproved":insertionAlgorithmImproved,
                     "Bubble" : bubbleAlgorithm,
                     "Mergesort" : mergesortAlgorithm,
                     "Quicksort": quicksortAlgorithm,
