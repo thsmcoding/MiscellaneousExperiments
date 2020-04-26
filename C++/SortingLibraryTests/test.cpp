@@ -63,7 +63,27 @@ TEST(INTEGERBUBBLESORT, bubbleSortFunction) {
 	EXPECT_EQ(vector1, vector1_bis);
 }
 
-int main(int argc, char** argv) {
+
+TEST(INTEGERQUICKSORT, quickSortFunction) {
+	std::vector<int> vector1 = { 0,100,-1,0,-15,-17,207,85,14,63,-690 };
+	std::vector<int> vector1_bis = { 0,100,-1,0,-15,-17,207,85,14,63,-690 };
+	std::sort(vector1.begin(), vector1.end());
+	quicksort<int>(vector1_bis, 0,vector1_bis.size()-1);
+	EXPECT_EQ(vector1, vector1_bis);
+}
+
+
+
+TEST(INTEGERQUICK3WAYSORT, quick3waySortFunction) {
+	std::vector<int> vector1 = { 0,100,-1,0,-15,-17,207,85,14,63,-690 };
+	std::vector<int> vector1_bis = { 0,100,-1,0,-15,-17,207,85,14,63,-690 };
+	std::sort(vector1.begin(), vector1.end());
+	quicksort3way<int>(vector1_bis, 0, vector1_bis.size()-1);
+	EXPECT_EQ(vector1, vector1_bis);
+}
+
+
+int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
 }

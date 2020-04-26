@@ -6,6 +6,11 @@ template<typename U> inline void selectionSort(std::vector<U>&);
 template<typename U> inline void insertionSort(std::vector<U>&);
 template<typename U> inline void insertionSortimproved(std::vector<U>&);
 template<typename U> inline void bubbleSort(std::vector<U> &);
+template<typename U> inline void quicksort(std::vector<U> &, int, int);
+template<typename U> inline int quicksortpartition(std::vector<U> &, int, int);
+template<typename U> inline void quicksort3way(std::vector<U>&, int, int);
+
+
 template<typename U>  bool compareU(U i, U j) {
 	return i < j;
 }
@@ -72,4 +77,67 @@ template<typename U> void bubbleSort(std::vector<U> &vec) {
 		if (swapped == false)
 			break;
 	}
+}
+
+template<typename U> int quicksortpartition(std::vector<U> &vec, int low, int high) {
+	int i = low, j = high + 1;
+	auto current = vec[i];
+	while (1) {
+		while (vec[++i] < current) {
+			if (i == high)
+				break;
+		}
+		while (vec[--j] > current) {
+			if (j == low)
+				break;
+		}
+		if (i >= j)
+			break;
+		
+		auto temp_i = vec[i];
+		auto temp_j = vec[j];
+		vec[i] = temp_j;
+		vec[j] = temp_i;
+	}
+	auto current_j = vec[j];
+	vec[j] = current;
+	vec[low] = current_j;
+	return j;
+}
+
+template<typename U> void quicksort(std::vector<U> &vec, int low, int high) {
+	if (low >= high)
+		return;
+	int partition_index = quicksortpartition(vec, low, high);
+	quicksort(vec, 0, partition_index - 1);
+	quicksort(vec, partition_index + 1, high);
+
+}
+
+template<typename U> void quicksort3way(std::vector<U>&vec, int low, int high) {
+	if (low >= high)
+		return;
+	int inf = low, i = low + 1, sup = high;
+	auto current = vec[low];
+	while (i <= sup) {
+		if (vec[i] < current) {
+			auto temp_i = vec[i];
+			auto temp_current = vec[inf];
+			vec[inf++] = temp_i;
+			vec[i++] = temp_current;
+
+		}
+
+		else if (vec[i] > current) {
+			auto temp_i = vec[i];
+			auto temp_sup = vec[sup];
+			vec[i] = temp_sup;
+			vec[sup] = temp_i;
+			sup--;
+		}
+		else
+			i++;
+	}
+	quicksort3way(vec, low, inf - 1);
+	quicksort3way(vec, sup + 1, high);
 }
