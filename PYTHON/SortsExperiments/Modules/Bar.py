@@ -29,6 +29,8 @@ class Bar():
         self.x2 = x2
         self.y2 = y2
         self.data = data
+        self.color = COLORS[0]       
+
         
     def setColor(self, color):
         self.color = color

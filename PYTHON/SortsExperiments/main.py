@@ -9,11 +9,11 @@ from Start.setup_mod import WINDOW_WIDTH
 import Modules.Appwindow as appwin
 
 
+
 def main():
     app = appwin.Appwindow(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT)
     app.mainloop()
     app.quit()
-
     
     
 if __name__ == "__main__":

@@ -4,7 +4,6 @@ Created on Tue Apr  1 07:45:20 2020
 @author:HTS
 """
 
-
 ###### GBLOBAL VARIABLES ########################
 WINDOW_TITLE  = "Sorting - Animations"
 WINDOW_WIDTH  = 801

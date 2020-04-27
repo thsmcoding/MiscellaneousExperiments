@@ -100,16 +100,10 @@ def insertionAlgorithmImproved(current, gui):
     ti.sleep(0.4)
     l = [makeexchangesimproved(j,current, gui) for j in range(current,-1, -1)] 
     gui.setColor(current, 0)  
-    
-    
-
-
 
 
 def mergesortAlgorithm(listBars,gui):
     print("Starting mergeSort algorithm")
-
-
 
 
 def quicksortPartition(gui, low, high):
@@ -117,7 +111,6 @@ def quicksortPartition(gui, low, high):
     _indexList = [low+1, high]
     if low >= high:
         return -1    
-    bars = gui.listBars
     check_validity = True
     while check_validity == True:
         while gui.listBars[_indexList[0]].data <= gui.listBars[low].data :
@@ -139,6 +132,34 @@ def quicksortPartition(gui, low, high):
                    
     
     
+def quicksort3wayAlgorithm(gui, low, high):
+    if high <= low:
+        return None
+    
+    current = gui.listBars[low].data
+    _indexList = [low, low+1, high]
+    
+    while _indexList[1] <= _indexList[2]:
+        gui.canvas.itemconfig(gui.rectangles[_indexList[1]], fill=COLORS[11])
+        gui.canvas.itemconfig(gui.rectangles[_indexList[1]], fill=COLORS[0]) 
+        
+        if  gui.listBars[_indexList[1]].data < current:
+            gui.swapNumber(_indexList[1], _indexList[0])
+            _indexList[0] +=1
+            _indexList[1] +=1     
+            ti.sleep(0.4)
+        
+        elif gui.listBars[_indexList[1]].data > current:
+            gui.swapNumber(_indexList[1], _indexList[2])
+            _indexList[2] -=1
+            
+        else:
+            _indexList[1] +=1
+    quicksort3wayAlgorithm(gui,low, _indexList[0]-1)
+    quicksort3wayAlgorithm(gui, _indexList[2]+1, high)
+        
+    
+     
 def quicksortAlgorithm(gui, low, high):
     print("Starting quicksort algorithm")
     if low >= high:
@@ -171,4 +192,5 @@ switcherFunction = {"Selection" : selectionAlgorithm,
                     "Bubble" : bubbleAlgorithm,
                     "Mergesort" : mergesortAlgorithm,
                     "Quicksort": quicksortAlgorithm,
+                    "Quick3waySort":quicksort3wayAlgorithm,
                     "Priority Queue": priorityQueueAlgorithm}
