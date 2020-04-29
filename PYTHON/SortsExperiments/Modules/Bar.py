@@ -22,6 +22,9 @@ class Bar():
         self.y2 = _y2
         self.data = data
         self.color = color       
+    def __str__(self):
+        return 'Bar(X1='+str(self.x1)+'  Y1='+str(self.y1)+'  X2='+str(self.x2)+'  Y2='+str(self.y2)+ '  data='+str(self.data)+ ')'
+        
         
     def setAttributes(self, x1 =None,y1 =None, x2=None, y2 =None, data=None):
         self.x1 = x1
@@ -30,7 +33,7 @@ class Bar():
         self.y2 = y2
         self.data = data
         self.color = COLORS[0]       
-
+        
         
     def setColor(self, color):
         self.color = color

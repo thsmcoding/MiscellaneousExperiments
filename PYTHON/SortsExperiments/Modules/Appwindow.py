@@ -39,9 +39,11 @@ class Appwindow(tk.Tk):
         self.canvas.delete(self.tags[i])
         
         
+    def setAttributes(self, aux_bars, k, i):
+        self.listBars[i].setAttributes(aux_bars[k].x1, aux_bars[k].y1, aux_bars[k].x2, aux_bars[k].y2, aux_bars[k].data)
+        
     def swapNumber(self, i, j):  
         if i != j :
-            print("In function swap value of bar i:%d - value of bar j:%d",self.listBars[i].data, self.listBars[j].data)
             temp1_bar = cp.deepcopy(self.listBars[i])
             temp2_bar = cp.deepcopy(self.listBars[j])              
             self.deleteRectangle(i)        
@@ -57,14 +59,16 @@ class Appwindow(tk.Tk):
             self.rectangles[j] = self.createRectanglefrombar(self.listBars[j], color_j,j)
             self.rectangles[i] = self.createRectanglefrombar(self.listBars[i], color_i,i)
              
-                
+            
+      
+        
     def setColor(self,i,color):
         self.canvas.itemconfig(self.rectangles[i], fill = COLORS[color])
         
         
 
-    def createRectanglefrombar(self, mybar, color=None ,i=None):
-        color= mybar.color
+    def createRectanglefrombar(self, mybar, color=None,i=None):
+        color = mybar.color
         if color is None:
             color = COLORS[0]        
        
@@ -122,23 +126,30 @@ class Appwindow(tk.Tk):
    
  
         # # thread_swap = thd.Thread(target=self.swapNumber, args=(self.numbers-1, self.numbers-2))  ##JUST TO TEST
+               
         
         
         thread_swap = thd.Thread(target=self.applySelectedAlgorithm)       
         thread_swap.start()    
-        print("Secondary thread is over")      
         
         
         
-        
+        # print("Secondary thread is over")            
+              
         
         
     def applySelectedAlgorithm(self):
-        if self.algorithm ==  "Quicksort" or self.algorithm =="Quick3waySort":
-            std.switcherFunction[self.algorithm](self,0,self.numbers-1)            
+        check_sorted = all(self.listBars[i+1].data >= self.listBars[i].data  for i in range(0, self.numbers-1, 1))
+        if check_sorted == False:
+            if self.algorithm ==  "Quicksort" or self.algorithm =="Quick3waySort":
+                std.switcherFunction[self.algorithm](self,0,self.numbers-1)             
+            elif self.algorithm == "MergeSortTD" or self.algorithm == "MergesortBU":
+                std.switcherFunction[self.algorithm](self, 0,self.numbers-1)    
+            else:
+                [std.switcherFunction[self.algorithm](current, self) for current in self.arguments]      
         else:
-            [std.switcherFunction[self.algorithm](current, self) for current in self.arguments]        
-        
+            msg.showwarning("Sorting animations","Your array is already sorted")
+                
         
     def createcomponents(self, titre, width, height):
         self.title(titre)
@@ -187,7 +198,7 @@ class Appwindow(tk.Tk):
         self.size_Entry.pack(side=tk.LEFT)
         algos = ALGORITHMS
         self.algo_ComboList =ttk.Combobox(self.secondary_container, values=algos, state="readonly")
-        self.algo_ComboList.current(0)
+        self.algo_ComboList.current(5)
         self.algo_ComboList.pack(side=tk.RIGHT, padx=30)
         self.algo_Label =tk.Label(self.secondary_container, text="Algorithms:", bg=COLORS[6], font=("Arial 10 bold"))
         self.algo_Label.pack(side=tk.RIGHT, padx=3)

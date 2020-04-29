@@ -7,6 +7,7 @@ Created on Tue Apr  1 07:45:20 2020
 import time as ti
 import random as rd
 from Start.setup_mod import COLORS
+import copy as cp
 
 
 def generateRandomArray(n, _min, _max):
@@ -99,12 +100,69 @@ def insertionAlgorithmImproved(current, gui):
     gui.listBars[current].setColor(COLORS[11])
     ti.sleep(0.4)
     l = [makeexchangesimproved(j,current, gui) for j in range(current,-1, -1)] 
-    gui.setColor(current, 0)  
+    gui.setColor(current, 0)    
+    
+    
+def merge(gui, low, mid, high):
+    rect_copies = [ cp.deepcopy(r) for r in gui.rectangles]
+    bars_copies = [ cp.deepcopy(b) for b in gui.listBars]
+    aux_rect = [r for r in rect_copies]
+    aux_bars = [b for b in bars_copies]
+    indexes = [low, mid+1]
+    for k in range(low, high+1):
+        temp_k = gui.listBars[k]
+        gui.deleteRectangle(k)
+        if indexes[0] > mid:
+            temp = aux_bars[indexes[1]]
+            gui.listBars[k].setAttributes(temp_k.x1, temp.y1, temp_k.x2, temp.y2, temp.data)
+            gui.rectangles[k] = gui.createRectanglefrombar(gui.listBars[k], color=temp.getColor,i=k)
+            indexes[1] +=1
+        elif indexes[1] > high:
+            temp = aux_bars[indexes[0]]
+            gui.listBars[k].setAttributes(temp_k.x1, temp.y1, temp_k.x2, temp.y2, temp.data)
+            gui.rectangles[k] = gui.createRectanglefrombar(gui.listBars[k], color=temp.getColor(),i=k)
+            indexes[0] +=1
+        elif aux_bars[indexes[0]].data < aux_bars[indexes[1]].data:
+            temp = aux_bars[indexes[0]]
+            gui.listBars[k].setAttributes(temp_k.x1, temp.y1, temp_k.x2, temp.y2, temp.data)
+            gui.rectangles[k] = gui.createRectanglefrombar(gui.listBars[k], color=temp.getColor(),i=k)
+            indexes[0] +=1   
+        else:
+            temp = aux_bars[indexes[1]]
+            gui.listBars[k].setAttributes(temp_k.x1, temp.y1, temp_k.x2, temp.y2, temp.data)
+            gui.rectangles[k] =gui.createRectanglefrombar(gui.listBars[k], color=temp.getColor(),i=k) 
+            indexes[1] +=1
+
+    
+def mergesortTDAlgorithm(gui, low, high):
+    if low >= high:
+        return    
+    mid = low + (high-low)//2
+    gui.canvas.itemconfig(gui.rectangles[mid], fill=COLORS[11])
+    ti.sleep(0.2)
+    gui.canvas.itemconfig(gui.rectangles[mid], fill=COLORS[0])
+    ti.sleep(0.4)
+    aux_rect = []
+    aux_bars = []
+    mergesortTDAlgorithm(gui, low, mid)
+    mergesortTDAlgorithm(gui, mid+1, high)    
+    merge(gui, low,mid,high)
 
 
-def mergesortAlgorithm(listBars,gui):
-    print("Starting mergeSort algorithm")
-
+def mergesortBUAlgorithm(gui, low, high):
+    print("Starting mergesortBUAlgorithm algorithm")
+    N = high+1
+    size =1
+    while size < N:
+        i = 0
+        while i < N-size:
+            gui.canvas.itemconfig(gui.rectangles[i+size-1], fill=COLORS[11])
+            ti.sleep(0.1)
+            gui.canvas.itemconfig(gui.rectangles[i+size-1], fill=COLORS[0])
+            merge(gui,i,i+size-1, min(i+size+size-1, N-1))
+            i += size+size
+        size = size+size
+        
 
 def quicksortPartition(gui, low, high):
     myrectangles = gui.rectangles
@@ -134,25 +192,20 @@ def quicksortPartition(gui, low, high):
     
 def quicksort3wayAlgorithm(gui, low, high):
     if high <= low:
-        return None
-    
+        return None    
     current = gui.listBars[low].data
-    _indexList = [low, low+1, high]
-    
+    _indexList = [low, low+1, high]    
     while _indexList[1] <= _indexList[2]:
         gui.canvas.itemconfig(gui.rectangles[_indexList[1]], fill=COLORS[11])
-        gui.canvas.itemconfig(gui.rectangles[_indexList[1]], fill=COLORS[0]) 
-        
+        gui.canvas.itemconfig(gui.rectangles[_indexList[1]], fill=COLORS[0])         
         if  gui.listBars[_indexList[1]].data < current:
             gui.swapNumber(_indexList[1], _indexList[0])
             _indexList[0] +=1
             _indexList[1] +=1     
-            ti.sleep(0.4)
-        
+            ti.sleep(0.4)        
         elif gui.listBars[_indexList[1]].data > current:
             gui.swapNumber(_indexList[1], _indexList[2])
-            _indexList[2] -=1
-            
+            _indexList[2] -=1            
         else:
             _indexList[1] +=1
     quicksort3wayAlgorithm(gui,low, _indexList[0]-1)
@@ -169,7 +222,6 @@ def quicksortAlgorithm(gui, low, high):
     gui.canvas.itemconfig(myrectangles[high], fill=COLORS[11])
     ti.sleep(0.1)
     j_found = quicksortPartition(gui, low, high)
-    print("Value of j ", j_found)
     if (j_found != -1):
         gui.canvas.itemconfig(myrectangles[j_found], fill=COLORS[14])
     ti.sleep(0.5)   
@@ -186,11 +238,15 @@ def priorityQueueAlgorithm(listBars,gui):
     print("Starting selection algorithm")
 
 
+
+
 switcherFunction = {"Selection" : selectionAlgorithm,
                     "Insertion" : insertionAlgorithm,
                     "Insertionimproved":insertionAlgorithmImproved,
                     "Bubble" : bubbleAlgorithm,
-                    "Mergesort" : mergesortAlgorithm,
                     "Quicksort": quicksortAlgorithm,
                     "Quick3waySort":quicksort3wayAlgorithm,
-                    "Priority Queue": priorityQueueAlgorithm}
+                    "Priority Queue": priorityQueueAlgorithm,
+                    "MergesortBU" : mergesortBUAlgorithm,
+                     "MergesortTD": mergesortTDAlgorithm
+                    }
