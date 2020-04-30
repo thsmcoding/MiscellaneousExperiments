@@ -145,6 +145,8 @@ class Appwindow(tk.Tk):
                 std.switcherFunction[self.algorithm](self,0,self.numbers-1)             
             elif self.algorithm == "MergeSortTD" or self.algorithm == "MergesortBU":
                 std.switcherFunction[self.algorithm](self, 0,self.numbers-1)    
+            elif self.algorithm == "Shellshort":
+                std.switcherFunction[self.algorithm](self)
             else:
                 [std.switcherFunction[self.algorithm](current, self) for current in self.arguments]      
         else:
@@ -198,7 +200,7 @@ class Appwindow(tk.Tk):
         self.size_Entry.pack(side=tk.LEFT)
         algos = ALGORITHMS
         self.algo_ComboList =ttk.Combobox(self.secondary_container, values=algos, state="readonly")
-        self.algo_ComboList.current(5)
+        self.algo_ComboList.current(4)
         self.algo_ComboList.pack(side=tk.RIGHT, padx=30)
         self.algo_Label =tk.Label(self.secondary_container, text="Algorithms:", bg=COLORS[6], font=("Arial 10 bold"))
         self.algo_Label.pack(side=tk.RIGHT, padx=3)
