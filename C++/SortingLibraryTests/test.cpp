@@ -10,7 +10,7 @@ using namespace std;
 TEST(EMPTYVECTORCASE, selectionSortFunction) {
 	std::vector<int> vector1 = {};
 	std::vector<int> vector1_bis = {};
-	
+
 	selectionSort<int>(vector1_bis);
 	EXPECT_EQ(vector1, vector1_bis);
 }
@@ -56,7 +56,7 @@ TEST(INTEGERINSERTIONIMRPOVED, insertionSortimprovedFunction) {
 }
 
 TEST(INTEGERBUBBLESORT, bubbleSortFunction) {
-	std::vector<int> vector1 = {0,100,-1,0,-15,-17,207,85,14,63,789,157,41,-45 };
+	std::vector<int> vector1 = { 0,100,-1,0,-15,-17,207,85,14,63,789,157,41,-45 };
 	std::vector<int> vector1_bis = { 0,100,-1,0,-15,-17,207,85,14,63,789,157,41,-45 };
 	std::sort(vector1.begin(), vector1.end());
 	bubbleSort<int>(vector1_bis);
@@ -68,19 +68,47 @@ TEST(INTEGERQUICKSORT, quickSortFunction) {
 	std::vector<int> vector1 = { 0,100,-1,0,-15,-17,207,85,14,63,-690 };
 	std::vector<int> vector1_bis = { 0,100,-1,0,-15,-17,207,85,14,63,-690 };
 	std::sort(vector1.begin(), vector1.end());
-	quicksort<int>(vector1_bis, 0,vector1_bis.size()-1);
+	quicksort<int>(vector1_bis, 0, vector1_bis.size() - 1);
 	EXPECT_EQ(vector1, vector1_bis);
 }
-
-
-
 TEST(INTEGERQUICK3WAYSORT, quick3waySortFunction) {
 	std::vector<int> vector1 = { 0,100,-1,0,-15,-17,207,85,14,63,-690 };
 	std::vector<int> vector1_bis = { 0,100,-1,0,-15,-17,207,85,14,63,-690 };
 	std::sort(vector1.begin(), vector1.end());
-	quicksort3way<int>(vector1_bis, 0, vector1_bis.size()-1);
+	quicksort3way<int>(vector1_bis, 0, vector1_bis.size() - 1);
 	EXPECT_EQ(vector1, vector1_bis);
 }
+
+
+TEST(INTEGERMERGESORTTD, mergesorttdfunction) {
+	std::vector<int> vector1 = { 0,100,-1,0,-15 };
+	//-17, 207, 85, 14, 63, -690
+
+	std::vector<int> vector1_bis = { 0,100,-1,0,-15 };
+	//-17, 207, 85, 14, 63, -690
+	std::sort(vector1.begin(), vector1.end());
+	mergesortTD<int>(vector1_bis, 0, vector1_bis.size() - 1);
+	EXPECT_EQ(vector1, vector1_bis);
+}
+TEST(INTEGERMERGESORTBU, mergesortbufunction) {
+	std::vector<int> vector1 = { 0,100,-1,0,-15,-17, 207, 85, 14, 63, -690 };
+	std::vector<int> vector1_bis = { 0,100,-1,0,-15,-17, 207, 85, 14, 63, -690 };
+	std::sort(vector1.begin(), vector1.end());
+	mergesortBU<int>(vector1_bis, 0, vector1_bis.size() - 1);
+	EXPECT_EQ(vector1, vector1_bis);
+}
+TEST(INTEGERSHELLSORT, shellsortfunction) {
+	std::vector<int> vector1 = { 0,100,-1,0,-15,-17, 207, 85, 14, 63, -690 };
+	std::vector<int> vector1_bis = { 0,100,-1,0,-15,-17, 207, 85, 14, 63, -690 };
+	std::sort(vector1.begin(), vector1.end());
+	shellsort<int>(vector1_bis);
+	EXPECT_EQ(vector1, vector1_bis);
+}
+
+
+
+
+
 
 
 int main(int argc, char **argv) {

@@ -1,5 +1,6 @@
 #pragma once
 #include<vector>
+#include<math.h>
 
 template<typename U> inline bool compareU(U i, U j);
 template<typename U> inline void selectionSort(std::vector<U>&);
@@ -9,13 +10,18 @@ template<typename U> inline void bubbleSort(std::vector<U> &);
 template<typename U> inline void quicksort(std::vector<U> &, int, int);
 template<typename U> inline int quicksortpartition(std::vector<U> &, int, int);
 template<typename U> inline void quicksort3way(std::vector<U>&, int, int);
+template<typename U> inline void mergesortTD(std::vector<U>&, int, int);
+template<typename U> inline void mergesortBU(std::vector<U>&, int, int);
+template<typename U> inline void merge(std::vector<U>&, int, int, int);
+template<typename U> inline void shellsort(std::vector<U>&);
 
 
 template<typename U>  bool compareU(U i, U j) {
 	return i < j;
 }
 
-/****** FUCNTION DEFINITIONS ************************************************/
+
+/****** FUNCTION DEFINITIONS ************************************************/
 template<typename U> void selectionSort(std::vector<U>& vec1) {
 	for (int i = 0; i < vec1.size(); i++) {
 		auto current = vec1[i];
@@ -93,7 +99,7 @@ template<typename U> int quicksortpartition(std::vector<U> &vec, int low, int hi
 		}
 		if (i >= j)
 			break;
-		
+
 		auto temp_i = vec[i];
 		auto temp_j = vec[j];
 		vec[i] = temp_j;
@@ -140,4 +146,61 @@ template<typename U> void quicksort3way(std::vector<U>&vec, int low, int high) {
 	}
 	quicksort3way(vec, low, inf - 1);
 	quicksort3way(vec, sup + 1, high);
+}
+
+
+template<typename U> void merge(std::vector<U>& vec, int low, int mid, int high) {
+	std::vector<U> copy_vec;
+	std::copy(vec.begin(), vec.end(), std::back_inserter(copy_vec));
+	copy_vec = vec;
+	int i, j;
+	i = low;
+	j = mid + 1;
+
+	for (unsigned int k = low; k <= high; k++) {
+		if (i > mid) vec[k] = copy_vec[j++];
+		else if (j > high) vec[k] = copy_vec[i++];
+		else if (copy_vec[i] < copy_vec[j]) vec[k] = copy_vec[i++];
+		else  vec[k] = copy_vec[j++];
+	}
+}
+
+
+template<typename U> void mergesortTD(std::vector<U>& vec, int low, int high) {
+	if (high <= low)
+		return;
+	int mid = ceil(low + (high - low) / 2);
+	mergesortTD(vec, low, mid);
+	mergesortTD(vec, mid + 1, high);
+	merge(vec, low, mid, high);
+}
+
+template<typename U> void mergesortBU(std::vector<U>& vec, int low, int high) {
+	auto N = vec.size();
+	for (unsigned int sz = 1; sz < N; sz = sz + sz) {
+		for (unsigned int i = 0; i < N - sz; i += sz + sz) {
+			int min = fmin(N - 1, i + sz + sz - 1);
+			merge(vec, i, i + sz - 1, min);
+		}
+	}
+}
+
+template<typename U> void shellsort(std::vector<U>& vec) {
+	int h = 1, N = vec.size();
+	while (h < N / 3) {
+		h = 3 * h + 1;
+	}
+
+	while (h >= 1) {
+		for (int i = h; i < N; i++) {
+			for (int j = i; j >= h && vec[j] < vec[j - h]; j -= h) {
+				auto current_j = vec[j];
+				auto current_j_h = vec[j - h];
+				vec[j] = current_j_h;
+				vec[j - h] = current_j;
+			}
+		}
+		h = h / 3;
+
+	}
 }
